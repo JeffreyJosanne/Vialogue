@@ -1,0 +1,6 @@
+{
+	"MONGO_DB_URL": "mongodb://localhost:27017/test",
+	"PARSE_SERVER_URL": "http://localhost:1337/parse",
+	"HTTP_SERVER_PORT_NO": 1337, 
+	"CLOUD_URL": "./app/cloud/main.js"
+}
