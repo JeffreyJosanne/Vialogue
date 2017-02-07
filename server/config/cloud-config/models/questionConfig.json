@@ -1,0 +1,12 @@
+{
+    "ID_FIELD": "id",
+    "TYPE_FIELD": "type",
+    "IS_COMPULSARY_FIELD": "is_compulsary",
+    "QUESTION_STRING_FIELD": "question_string",
+    "OPTIONS_FIELD": "options",
+    "ANSWERS_FIELD": "answers",
+    "HINTS_FIELD": "hints",
+    "SOLUTION_FIELD": "solution",
+    "IS_EDITED_FIELD": "is_edited",
+    "CLASS_NAME": "Question"
+}

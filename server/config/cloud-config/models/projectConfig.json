@@ -1,0 +1,18 @@
+{
+	"CLASS_NAME": "Project",
+	"ID_FIELD": "id",
+	"PARENT_FIELD": "parent",
+	"ORIGINAL_PARENT_FIELD": "original_parent",
+	"NAME_FIELD": "name",
+	"DESCRIPTION_FIELD": "description",
+	"TAGS_FIELD": "tags",
+	"IS_DUBBED_FIELD": "is_dubbed",
+	"IS_EDITED_FIELD": "is_edited",
+	"CATEGORY_FIELD": "category",
+	"LANGUAGE_FIELD": "language",
+	"AUTHOR_FIELD": "author",
+	"RESOLUTION_X_FIELD": "resolution_x",
+	"RESOLUTION_Y_FIELD": "resolution_y",
+	"SLIDE_ORDERING_SEQUENCE_FIELD": "slide_ordering_sequence",
+	"SLIDES_FIELD": "slides"
+}
