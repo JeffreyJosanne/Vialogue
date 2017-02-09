@@ -8,7 +8,7 @@
  * 		layering_objects {String Array}: [...],
  * 		hyperlinks {String Array}: [...],
  * 		type {String}: ...,
- * 		resource {Image | Video | Question}: ...,
+ * 		resource {Resource}: ...,
  *      is_edited {boolean}: ...
  * }
  */
@@ -16,12 +16,10 @@
 var fs = require('fs');
 var validate = require('validate.js');
 
-var JsonUtils = require('../utils/JsonUtils.js');
-var ErrorUtils = require('../utils/ErrorUtils.js');
-var ParseClass = require('./interfaces/ParseClass.js')
-var Image = require('./Image.js').Image;
-var Video = require('./Video.js').Video;
-var Question = require('./Question.js').Question;
+var JsonUtils = require('../util/JsonUtils.js');
+var ErrorUtils = require('../util/ErrorUtils.js');
+var ParseClass = require('./interface/ParseClass.js')
+var Resource = require('./factory/Resource.js').Resource;
 
 /* private variables to this class are stored in the form of this WeakMaps
  * (where the key is the instance object "this", and the value is the value
@@ -63,11 +61,23 @@ const POSSIBLE_SEGMENT_TYPES = [
 
 class Slide extends ParseClass.ParseClass {
 
-    constructor(parameter) {
-        return super(CLASS_NAME, parameter);
+    constructor(parameter: string | Slide): Promise {
+        super(CLASS_NAME, parameter);
     }
 
-    constructorFromParseObject(ParseObject) {
+	getObject() {
+		return this.object;
+	}
+
+	toJsonStringWithIds() {
+
+	}
+
+	toJsonStringWithObjects() {
+
+	}
+
+    constructorFromParseObject(ParseObject: Parse.Object): Promise {
         console.log('Slide : constructorFromParseObject : called');
         return new Promise((fulfill, reject) => {
 
@@ -79,6 +89,7 @@ class Slide extends ParseClass.ParseClass {
                 _type.set(this, ParseObject.get(TYPE_FIELD));
                 _resource.set(this, ParseObject.get(RESOURCE_FIELD));
                 _isEdited.set(this, ParseObject.get(IS_EDITED_FIELD));
+				fulfill(this);
             } catch (error) {
                 reject(error);
             }
@@ -86,7 +97,7 @@ class Slide extends ParseClass.ParseClass {
         });
     }
 
-    constructorFromJsonString(jsonString) {
+    constructorFromJsonString(jsonString: string): Promise {
         console.log('Slide : constructorFromJsonString : initializing');
 
         this.jsonString = jsonString;
@@ -113,7 +124,7 @@ class Slide extends ParseClass.ParseClass {
         });
     }
 
-    parseJson() {
+    parseJson(): Promise {
         return new Promise((fulfill, reject) => {
 
             this.validateId()
@@ -121,10 +132,10 @@ class Slide extends ParseClass.ParseClass {
             .then(() => { return this.validateLayeringObjects()})
             .then(() => { return this.validateHyperlinks()})
             .then(() => { return this.validateType()})
-            .then(() => { return this.validateResource()})
-            .then(() => { return this.validateIsEdited()})
+            .then(() => { console.log('validateType done');return this.validateResource()})
+            .then(() => { console.log('validateResource done');return this.validateIsEdited()})
             .then(() => { fulfill(this)})
-            .catch((error) => { reject(Error(error))});
+            .catch((error) => { console.log(error); reject(Error(error))});
         });
     }
 
@@ -132,7 +143,7 @@ class Slide extends ParseClass.ParseClass {
 	 * validates the ID_FIELD field
 	 * look at "validateIdField" method for description
 	 */
-	validateId() {
+	validateId(): Promise {
 		return new Promise((fulfill, reject) => {
 			this.validateIdField(ID_FIELD, CLASS_NAME).then(
 				() => {
@@ -151,7 +162,7 @@ class Slide extends ParseClass.ParseClass {
 		});
 	}
 
-    validateProjectSlideId() {
+    validateProjectSlideId(): Promise {
         var this_ = this;
         return new Promise((fulfill, reject) => {
 
@@ -173,7 +184,7 @@ class Slide extends ParseClass.ParseClass {
         });
     }
 
-    validateLayeringObjects() {
+    validateLayeringObjects(): Promise {
         return new Promise((fulfill, reject) => {
             // TODO: implement
             _layeringObjects.set(this, []);
@@ -181,7 +192,7 @@ class Slide extends ParseClass.ParseClass {
         });
     }
 
-    validateHyperlinks() {
+    validateHyperlinks(): Promise {
         return new Promise((fulfill, reject) => {
 
             var hyperlinks = this.object[HYPERLINKS_FIELD];
@@ -243,7 +254,7 @@ class Slide extends ParseClass.ParseClass {
         });
     }
 
-    validateType() {
+    validateType(): Promise {
         return new Promise((fulfill, reject) => {
 
             var type = this.object[TYPE_FIELD];
@@ -279,7 +290,8 @@ class Slide extends ParseClass.ParseClass {
 
     // TODO: write comments
     // This should be called only after the validateType() method is called
-    validateResource() {
+    validateResource(): Promise {
+		console.log('validateResource called');
         return new Promise((fulfill, reject) => {
 
             var resource = this.object[RESOURCE_FIELD];
@@ -289,57 +301,21 @@ class Slide extends ParseClass.ParseClass {
                 reject(ErrorUtils.FIELD_NOT_PRESENT_ERROR(RESOURCE_FIELD, CLASS_NAME));
             }
 
-            // Image Resource
-            if((this.object[TYPE_FIELD] === IMAGE_TYPE_NAME)) {
-                new Image(JSON.stringify(resource)).then(
-                    (result) => {
-                        if(result.constructor.name === IMAGE_TYPE_NAME) {
-                            _resource.set(this, result);
-                        } else {
-                            reject(ErrorUtils.TYPE_NOT_CORRECT_ERROR(RESOURCE_FIELD, CLASS_NAME, result.constructor.name, 'image'));
-                        }
-                    }, (error) => {
-                        reject(error);
-                    }
-                );
-            }
-
-            // Video Resource
-            if((this.object[TYPE_FIELD] === VIDEO_TYPE_NAME)) {
-                new Video(JSON.stringify(resource)).then(
-                    (result) => {
-                        if(result.constructor.name === VIDEO_TYPE_NAME) {
-                            _resource.set(this, result);
-                        } else {
-                            reject(ErrorUtils.TYPE_NOT_CORRECT_ERROR(RESOURCE_FIELD, CLASS_NAME, result.constructor.name, 'Video'));
-                        }
-                    }, (error) => {
-                        reject(error);
-                    }
-                );
-            }
-
-            // Question Resource
-            if((this.object[TYPE_FIELD] === QUESTION_TYPE_NAME)) {
-                new Question(JSON.stringify(resource)).then(
-                    (result) => {
-                        if(result.constructor.name === QUESTION_TYPE_NAME) {
-                            _resource.set(this, result);
-                        } else {
-                            reject(ErrorUtils.TYPE_NOT_CORRECT_ERROR(RESOURCE_FIELD, CLASS_NAME, result.constructor.name, 'Question'));
-                        }
-                    }, (error) => {
-                        reject(error);
-                    }
-                );
-            }
-
-            fulfill();
-
-        });
+			var resourceInstance = new Resource(JSON.stringify(resource));
+			console.log(resourceInstance);
+			console.log('hmmmmmmmmmmmmmmmmmm');
+			resourceInstance.init().then(
+				(result) => {
+					_resource.set(this, resource);
+					fulfill();
+				}, (error) => {
+					reject(error);
+				}
+			)
+		});
     }
 
-    validateIsEdited() {
+    validateIsEdited(): Promise {
 		return new Promise((fulfill, reject) => {
 
 			var isEdited = this.object[IS_EDITED_FIELD];

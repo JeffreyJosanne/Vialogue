@@ -1,0 +1,8 @@
+{
+    "ID_FIELD": "id",
+    "TYPE_FIELD": "type",
+    "URL_FIELD": "url",
+    "CHILDREN_RESOURCES_FIELD": "children_resources",
+    "IS_EDITED_FIELD": "is_edited",
+    "CLASS_NAME": "Image"
+}

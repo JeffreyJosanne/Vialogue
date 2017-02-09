@@ -8,5 +8,6 @@
     "HINTS_FIELD": "hints",
     "SOLUTION_FIELD": "solution",
     "IS_EDITED_FIELD": "is_edited",
+    "URL_FIELD": "url",
     "CLASS_NAME": "Question"
 }

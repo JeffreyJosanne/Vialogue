@@ -1,5 +1,7 @@
 'use strict';
 
+require("babel-polyfill");
+
 var fs = require('fs');
 var path = require('path');
 var ParseServer = require('parse-server').ParseServer;

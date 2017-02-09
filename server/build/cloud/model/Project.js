@@ -6,6 +6,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
+var _dec, _class;
+
+var _flowRuntime = require('flow-runtime');
+
+var _flowRuntime2 = _interopRequireDefault(_flowRuntime);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -41,10 +49,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var fs = require('fs');
 var validate = require('validate.js');
 
-var JsonUtils = require('../utils/JsonUtils.js');
-var ErrorUtils = require('../utils/ErrorUtils.js');
-var Slide = require('./Slide.js').Slide;
-var ParseClass = require('./interfaces/ParseClass.js');
+var JsonUtils = require('../util/JsonUtils.js');
+var ErrorUtils = require('../util/ErrorUtils.js');
+// var Slide = require('./Slide.js').Slide;
+var ParseClass = require('./interface/ParseClass.js');
 
 /* private variables to this class are stored in the form of these WeakMaps
  * (where the key is the instance object "this", and the value is the value
@@ -62,7 +70,7 @@ var _name = new WeakMap();
 var _description = new WeakMap();
 var _tags = new WeakMap();
 var _isDubbed = new WeakMap();
-var _isEdited = new WeakMap(); // TODO
+var _isEdited = new WeakMap();
 var _resolutionX = new WeakMap();
 var _resolutionY = new WeakMap();
 var _slideOrderingSequence = new WeakMap();
@@ -90,8 +98,6 @@ var SLIDES_FIELD = ParseClass.projectConfig.SLIDES_FIELD;
 
 /**
  * A {Parse.Object} that represents a row in the {Project} class of the database
- *
- * // TODO: if time persists, make methods private
  *
  * public methods
  * 		constructor
@@ -131,8 +137,7 @@ var SLIDES_FIELD = ParseClass.projectConfig.SLIDES_FIELD;
  * 		slideOrderingSequence (gettable) : consists "Slide.project_slide_id" values
  * 		slides (gettable)
  */
-
-var Project = function (_ParseClass$ParseClas) {
+var Project = (_dec = _flowRuntime2.default.annotate(_flowRuntime2.default.class('Project', _flowRuntime2.default.method('constructor', _flowRuntime2.default.param('parameter', _flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.ref(Project))), _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('getObject', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('constructorFromParseObject', _flowRuntime2.default.param('parseObject', _flowRuntime2.default.ref('Parse')), _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('constructorFromJsonString', _flowRuntime2.default.param('jsonString', _flowRuntime2.default.string()), _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('toJsonStringWithIds', _flowRuntime2.default.return(_flowRuntime2.default.string())), _flowRuntime2.default.method('toJsonStringWithObjects', _flowRuntime2.default.return(_flowRuntime2.default.string())), _flowRuntime2.default.method('parseJson', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateId', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateParentId', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateOriginalParentId', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateCategoryId', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateLanguageId', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateAuthorId', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateName', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateDescription', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateTags', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateIsDubbed', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateIsEdited', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateResolution', _flowRuntime2.default.param('resolutionField', _flowRuntime2.default.string()), _flowRuntime2.default.param('instanceVariableName', _flowRuntime2.default.string()), _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateResolutionX', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateResolutionY', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateSlides', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('validateSlideOrderingSequence', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('save', _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise))), _flowRuntime2.default.method('parent', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('originalParent', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('category', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('language', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('author', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('name', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('description', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('tags', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('isDubbed', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('isEdited', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('resolutionX', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('resolutionY', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('slideOrderingSequence', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('slides', _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('parent', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('originalParent', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('category', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('language', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('author', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('name', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('description', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('tags', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('isDubbed', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('isEdited', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('resolutionX', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('resolutionY', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('slideOrderingSequence', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.method('slides', _flowRuntime2.default.param('val', _flowRuntime2.default.any()), _flowRuntime2.default.return(_flowRuntime2.default.any())), _flowRuntime2.default.extends(ParseClass.ParseClass))), _dec(_class = function (_ParseClass$ParseClas) {
 	_inherits(Project, _ParseClass$ParseClas);
 
 	/*
@@ -141,30 +146,46 @@ var Project = function (_ParseClass$ParseClas) {
   */
 
 	function Project(parameter) {
-		var _this, _ret;
-
 		_classCallCheck(this, Project);
 
-		return _ret = (_this = _possibleConstructorReturn(this, (Project.__proto__ || Object.getPrototypeOf(Project)).call(this, CLASS_NAME, parameter)), _this), _possibleConstructorReturn(_this, _ret);
+		var _parameterType = _flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.ref(Project));
+
+		var _returnType = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+		_flowRuntime2.default.param('parameter', _parameterType).assert(parameter);
+
+		return _possibleConstructorReturn(this, (Project.__proto__ || Object.getPrototypeOf(Project)).call(this, CLASS_NAME, parameter));
 	}
 
-	/**
-  * if Parse.Object is provided as input, then we just have to
-  * read the required fields from the provided Object
-  */
-
-
 	_createClass(Project, [{
+		key: 'getObject',
+		value: function getObject() {
+			return this.object;
+		}
+
+		/**
+   * if Parse.Object is provided as input, then we just have to
+   * read the required fields from the provided Object
+   */
+
+	}, {
 		key: 'constructorFromParseObject',
 		value: function constructorFromParseObject(parseObject) {
 			var _this2 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _parseObjectType = _flowRuntime2.default.ref('Parse');
+
+			var _returnType2 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			_flowRuntime2.default.param('parseObject', _parseObjectType).assert(parseObject);
+
+			return _returnType2.assert(new Promise(function (fulfill, reject) {
 
 				try {
 					_this2.id = parseObject.get(ID_FIELD);
 					_parent.set(_this2, parseObject.get(PARENT_FIELD));
 					_originalParent.set(_this2, parseObject.get(ORIGINAL_PARENT_FIELD));
+
 					_name.set(_this2, parseObject.get(NAME_FIELD));
 					_description.set(_this2, parseObject.get(DESCRIPTION_FIELD));
 					_tags.set(_this2, parseObject.get(TAGS_FIELD));
@@ -180,7 +201,7 @@ var Project = function (_ParseClass$ParseClas) {
 				} catch (error) {
 					reject(error);
 				}
-			});
+			}));
 		}
 
 		/**
@@ -193,24 +214,44 @@ var Project = function (_ParseClass$ParseClas) {
 		value: function constructorFromJsonString(jsonString) {
 			var _this3 = this;
 
+			var _jsonStringType = _flowRuntime2.default.string();
+
+			var _returnType3 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			_flowRuntime2.default.param('jsonString', _jsonStringType).assert(jsonString);
+
 			this.jsonString = jsonString;
 			this.object = JsonUtils.tryParseJSON(jsonString) || null;
 
 			if (this.object === null) {
 				// json string not valid
-				return new Promise(function (fulfill, reject) {
+				return _returnType3.assert(new Promise(function (fulfill, reject) {
 					reject(ErrorUtils.NOT_VALID_JSON_ERROR());
-				});
+				}));
 			}
 
-			return new Promise(function (fulfill, reject) {
+			return _returnType3.assert(new Promise(function (fulfill, reject) {
 				_this3.parseJson().then(function () {
 					// return the initialized object
 					fulfill(_this3);
 				}, function (error) {
 					reject(error);
 				});
-			});
+			}));
+		}
+	}, {
+		key: 'toJsonStringWithIds',
+		value: function toJsonStringWithIds() {
+			var _returnType4 = _flowRuntime2.default.return(_flowRuntime2.default.string());
+
+			return _returnType4.assert('{}');
+		}
+	}, {
+		key: 'toJsonStringWithObjects',
+		value: function toJsonStringWithObjects() {
+			var _returnType5 = _flowRuntime2.default.return(_flowRuntime2.default.string());
+
+			return _returnType5.assert('{}');
 		}
 
 		/*
@@ -234,7 +275,9 @@ var Project = function (_ParseClass$ParseClas) {
 		value: function parseJson() {
 			var _this4 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType6 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType6.assert(new Promise(function (fulfill, reject) {
 				_this4.validateId().then(function () {
 					return _this4.validateParentId();
 				}).then(function () {
@@ -260,15 +303,17 @@ var Project = function (_ParseClass$ParseClas) {
 				}).then(function () {
 					return _this4.validateResolutionY();
 				}).then(function () {
-					return _this4.validateSlideOrderingSequence();
-				}).then(function () {
 					return _this4.validateSlides();
 				}).then(function () {
+					return _this4.validateSlideOrderingSequence();
+				}).then(function () {
+					delete _this4.jsonString;
+					delete _this4.object;
 					fulfill(_this4);
 				}).catch(function (error) {
-					reject(Error(error));
+					console.log(error);reject(Error(error));
 				});
-			});
+			}));
 		}
 
 		/**
@@ -281,7 +326,9 @@ var Project = function (_ParseClass$ParseClas) {
 		value: function validateId() {
 			var _this5 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType7 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType7.assert(new Promise(function (fulfill, reject) {
 				_this5.validateIdField(ID_FIELD, CLASS_NAME).then(function () {
 
 					// CANNOT MAKE ID NOT SETTABLE BECAUSE WHEN USING THE Parse.Object.set METHOD,
@@ -294,7 +341,7 @@ var Project = function (_ParseClass$ParseClas) {
 				}, function (error) {
 					reject(error);
 				});
-			});
+			}));
 		}
 
 		/**
@@ -305,7 +352,19 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateParentId',
 		value: function validateParentId() {
-			return this.validateIdField(PARENT_FIELD, CLASS_NAME);
+			var _this6 = this;
+
+			var _returnType8 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType8.assert(new Promise(function (fulfill, reject) {
+
+				_this6.validateIdField(PARENT_FIELD, CLASS_NAME).then(function (result) {
+					_parent.set(_this6, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
 		}
 
 		/**
@@ -316,7 +375,19 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateOriginalParentId',
 		value: function validateOriginalParentId() {
-			return this.validateIdField(ORIGINAL_PARENT_FIELD, CLASS_NAME);
+			var _this7 = this;
+
+			var _returnType9 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType9.assert(new Promise(function (fulfill, reject) {
+
+				_this7.validateIdField(ORIGINAL_PARENT_FIELD, CLASS_NAME).then(function (result) {
+					_originalParent.set(_this7, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
 		}
 
 		/**
@@ -327,7 +398,19 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateCategoryId',
 		value: function validateCategoryId() {
-			return this.validateIdField(CATEGORY_FIELD, ParseClass.categoryConfig.CLASS_NAME);
+			var _this8 = this;
+
+			var _returnType10 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType10.assert(new Promise(function (fulfill, reject) {
+
+				_this8.validateIdField(CATEGORY_FIELD, ParseClass.categoryConfig.CLASS_NAME).then(function (result) {
+					_category.set(_this8, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
 		}
 
 		/**
@@ -338,7 +421,19 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateLanguageId',
 		value: function validateLanguageId() {
-			return this.validateIdField(LANGUAGE_FIELD, ParseClass.languageConfig.CLASS_NAME);
+			var _this9 = this;
+
+			var _returnType11 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType11.assert(new Promise(function (fulfill, reject) {
+
+				_this9.validateIdField(LANGUAGE_FIELD, ParseClass.languageConfig.CLASS_NAME).then(function (result) {
+					_language.set(_this9, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
 		}
 
 		/**
@@ -349,7 +444,19 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateAuthorId',
 		value: function validateAuthorId() {
-			return this.validateIdField(AUTHOR_FIELD, ParseClass.userConfig.CLASS_NAME);
+			var _this10 = this;
+
+			var _returnType12 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType12.assert(new Promise(function (fulfill, reject) {
+
+				_this10.validateIdField(AUTHOR_FIELD, ParseClass.userConfig.CLASS_NAME).then(function (result) {
+					_author.set(_this10, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
 		}
 
 		/**
@@ -363,11 +470,13 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateName',
 		value: function validateName() {
-			var _this6 = this;
+			var _this11 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType13 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
 
-				var name = _this6.object[NAME_FIELD];
+			return _returnType13.assert(new Promise(function (fulfill, reject) {
+
+				var name = _this11.object[NAME_FIELD];
 
 				// no such field
 				if (name === undefined) {
@@ -382,21 +491,29 @@ var Project = function (_ParseClass$ParseClas) {
 				// TODO: CHECK FOR SPECIAL CHARACTERS IN THE STRING
 				// use validate.js and RegEx for doing this
 
-				_name.set(_this6, name);
+				_name.set(_this11, name);
 				fulfill();
-			});
+			}));
 		}
 
-		// TODO: add documentation
+		/**
+   * validates the DESCRIPTION_FIELD field
+   * @return {Promise} :
+   * 		fulfilled iff DESCRIPTION_FIELD field exists in the JSON and
+   * 		value is String
+   *		rejected otherwise
+   */
 
 	}, {
 		key: 'validateDescription',
 		value: function validateDescription() {
-			var _this7 = this;
+			var _this12 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType14 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
 
-				var description = _this7.object[DESCRIPTION_FIELD];
+			return _returnType14.assert(new Promise(function (fulfill, reject) {
+
+				var description = _this12.object[DESCRIPTION_FIELD];
 
 				// no such field
 				if (description === undefined) {
@@ -409,21 +526,30 @@ var Project = function (_ParseClass$ParseClas) {
 				}
 
 				// TODO: validate description length
-				_description.set(_this7, description);
+				_description.set(_this12, description);
 				fulfill();
-			});
+			}));
 		}
 
-		// TODO: add documentation
+		/**
+   * validates the DESCRIPTION_FIELD field
+   * @return {Promise} :
+   * 		fulfilled iff DESCRIPTION_FIELD field exists in the JSON and
+   * 		value is Array and
+   * 		value of each element in the Array is String
+   *		rejected otherwise
+   */
 
 	}, {
 		key: 'validateTags',
 		value: function validateTags() {
-			var _this8 = this;
+			var _this13 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType15 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
 
-				var tags = _this8.object[TAGS_FIELD];
+			return _returnType15.assert(new Promise(function (fulfill, reject) {
+
+				var tags = _this13.object[TAGS_FIELD];
 
 				// no such field
 				if (tags === undefined) {
@@ -444,9 +570,9 @@ var Project = function (_ParseClass$ParseClas) {
 					}
 				}
 
-				_tags.set(_this8, tags);
+				_tags.set(_this13, tags);
 				fulfill();
-			});
+			}));
 		}
 
 		/**
@@ -460,11 +586,13 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateIsDubbed',
 		value: function validateIsDubbed() {
-			var _this9 = this;
+			var _this14 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType16 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
 
-				var isDubbed = _this9.object[IS_DUBBED_FIELD];
+			return _returnType16.assert(new Promise(function (fulfill, reject) {
+
+				var isDubbed = _this14.object[IS_DUBBED_FIELD];
 
 				// no such field
 				if (isDubbed === undefined) {
@@ -476,28 +604,34 @@ var Project = function (_ParseClass$ParseClas) {
 					reject(ErrorUtils.TYPE_NOT_CORRECT_ERROR(IS_DUBBED_FIELD, CLASS_NAME, typeof isDubbed === 'undefined' ? 'undefined' : _typeof(isDubbed), 'boolean'));
 				}
 
-				_isDubbed.set(_this9, isDubbed);
+				_isDubbed.set(_this14, isDubbed);
 				fulfill();
-			});
+			}));
 		}
 
-		// TODO: add documentation
+		/**
+   * validates the IS_EDITED_FIELD field
+   * @return {Promise} :
+   * 		fulfilled iff IS_EDITED_FIELD field exists in the JSON and
+   * 		value is boolean
+   */
 
 	}, {
 		key: 'validateIsEdited',
 		value: function validateIsEdited() {
-			var _this10 = this;
+			var _this15 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType17 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
 
-				console.log(_get(Project.prototype.__proto__ || Object.getPrototypeOf(Project.prototype), 'validateIsEdited', _this10));
-				_get(Project.prototype.__proto__ || Object.getPrototypeOf(Project.prototype), 'validateIsEdited', _this10).call(_this10, IS_EDITED_FIELD, CLASS_NAME).then(function (result) {
-					_isEdited.set(_this10, result);
+			return _returnType17.assert(new Promise(function (fulfill, reject) {
+
+				_get(Project.prototype.__proto__ || Object.getPrototypeOf(Project.prototype), 'validateIsEdited', _this15).call(_this15, IS_EDITED_FIELD, CLASS_NAME).then(function (result) {
+					_isEdited.set(_this15, result);
 					fulfill();
 				}, function (error) {
 					reject(error);
 				});
-			});
+			}));
 		}
 
 		/**
@@ -515,11 +649,21 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateResolution',
 		value: function validateResolution(resolutionField, instanceVariableName) {
-			var _this11 = this;
+			var _this16 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _resolutionFieldType = _flowRuntime2.default.string();
 
-				var resolution = _this11.object[resolutionField];
+			var _instanceVariableNameType = _flowRuntime2.default.string();
+
+			var _returnType18 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			_flowRuntime2.default.param('resolutionField', _resolutionFieldType).assert(resolutionField);
+
+			_flowRuntime2.default.param('instanceVariableName', _instanceVariableNameType).assert(instanceVariableName);
+
+			return _returnType18.assert(new Promise(function (fulfill, reject) {
+
+				var resolution = _this16.object[resolutionField];
 
 				// no such field
 				if (resolution === undefined) {
@@ -533,10 +677,8 @@ var Project = function (_ParseClass$ParseClas) {
 
 				// TODO: CHECK IF RESOLUTION IS VALID (i.e not negative, ...)
 
-				var str = '_' + instanceVariableName + '.set(this, resolution)';
-				eval(str);
-				fulfill();
-			});
+				fulfill(resolution);
+			}));
 		}
 
 		/**
@@ -547,7 +689,19 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateResolutionX',
 		value: function validateResolutionX() {
-			return this.validateResolution(RESOLUTION_X_FIELD, 'resolutionX');
+			var _this17 = this;
+
+			var _returnType19 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType19.assert(new Promise(function (fulfill, reject) {
+
+				_this17.validateResolution(RESOLUTION_X_FIELD, 'resolutionX').then(function (result) {
+					_resolutionX.set(_this17, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
 		}
 
 		/**
@@ -558,7 +712,90 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateResolutionY',
 		value: function validateResolutionY() {
-			return this.validateResolution(RESOLUTION_Y_FIELD, 'resolutionY');
+			var _this18 = this;
+
+			var _returnType20 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			return _returnType20.assert(new Promise(function (fulfill, reject) {
+
+				_this18.validateResolution(RESOLUTION_Y_FIELD, 'resolutionY').then(function (result) {
+					_resolutionY.set(_this18, result);
+					fulfill();
+				}, function (error) {
+					reject(error);
+				});
+			}));
+		}
+
+		/**
+   * validates each slide in the array corresponding to the SLIDES_FIELD field
+   * @return {Promise} :
+   * 		fulfilled if value is an array and
+   * 		every element in the array represents a valid {Slide} object
+   * 		(look at the Slide.js module for more information on what represents
+   	 * 		a valid Slide object)
+   */
+
+	}, {
+		key: 'validateSlides',
+		value: function validateSlides() {
+			var _returnType21 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
+			// TODO: uncomment
+			// return new Promise((fulfill, reject) => {
+			//
+			// 	var slides = this.object[SLIDES_FIELD];
+			//
+			// 	// no such field
+			// 	if(slides === undefined) {
+			// 		reject(ErrorUtils.FIELD_NOT_PRESENT_ERROR(SLIDES_FIELD, CLASS_NAME));
+			// 	}
+			//
+			// 	// if not array, invalid
+			// 	if(!validate.isArray(slides)) {
+			// 		reject(ErrorUtils.TYPE_NOT_CORRECT_ERROR(SLIDES_FIELD, CLASS_NAME, typeof(slides), 'Array'));
+			// 	}
+			//
+			// 	var _slides_ = [];
+			// 	// if any element is not a Slide Object, then invalid
+			// 	new Promise((fulfill, reject) => {
+			//
+			// 		// if no slides, then fulfill
+			// 		if(slides.length === 0) {
+			// 			fulfill();
+			// 		}
+			//
+			// 		var numFulfilled = 0;
+			// 		for(var i=0; i<slides.length; i++) {
+			// 			var slide = slides[i];
+			// 			new Slide(JSON.stringify(slide)).then(
+			// 				(result) => {
+			// 					// successfully initialized Slide Object
+			// 					_slides_.push(result);
+			// 					numFulfilled += 1;
+			// 					if(numFulfilled === slides.length) {
+			// 						// this was the last slide to fulfill its promise
+			// 						fulfill();
+			// 					}
+			// 				}, (error) => {
+			// 					// not valid Slide Object
+			// 					reject(error);
+			// 				}
+			// 			);
+			// 		}
+			// 	}).then(
+			// 		() => {
+			// 			_slides.set(this, _slides_);
+			// 			fulfill();
+			// 		}, (error) => {
+			// 			reject(error);
+			// 		}
+			// 	);
+			// });
+
+			return _returnType21.assert(new Promise(function (fulfill, reject) {
+				fulfill();
+			}));
 		}
 
 		/**
@@ -572,11 +809,13 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'validateSlideOrderingSequence',
 		value: function validateSlideOrderingSequence() {
-			var _this12 = this;
+			var _this19 = this;
 
-			return new Promise(function (fulfill, reject) {
+			var _returnType22 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
 
-				var slideOrderingSequence = _this12.object[SLIDE_ORDERING_SEQUENCE_FIELD];
+			return _returnType22.assert(new Promise(function (fulfill, reject) {
+
+				var slideOrderingSequence = _this19.object[SLIDE_ORDERING_SEQUENCE_FIELD];
 
 				// no such field
 				if (slideOrderingSequence === undefined) {
@@ -597,61 +836,9 @@ var Project = function (_ParseClass$ParseClas) {
 
 				// TODO: check if all the corresponding slides present
 
-				_slideOrderingSequence.set(_this12, slideOrderingSequence);
+				_slideOrderingSequence.set(_this19, slideOrderingSequence);
 				fulfill();
-			});
-		}
-	}, {
-		key: 'validateSlides',
-		value: function validateSlides() {
-			var _this13 = this;
-
-			return new Promise(function (fulfill, reject) {
-
-				var slides = _this13.object[SLIDES_FIELD];
-
-				// no such field
-				if (slides === undefined) {
-					reject(ErrorUtils.FIELD_NOT_PRESENT_ERROR(SLIDES_FIELD, CLASS_NAME));
-				}
-
-				// if not array, invalid
-				if (!validate.isArray(slides)) {
-					reject(ErrorUtils.TYPE_NOT_CORRECT_ERROR(SLIDES_FIELD, CLASS_NAME, typeof slides === 'undefined' ? 'undefined' : _typeof(slides), 'Array'));
-				}
-
-				var _slides_ = [];
-				// if any element is not a Slide Object, then invalid
-				new Promise(function (fulfill, reject) {
-
-					// if no slides, then fulfill
-					if (slides.length === 0) {
-						fulfill();
-					}
-
-					var numFulfilled = 0;
-					for (var i = 0; i < slides.length; i++) {
-						var slide = slides[i];
-						new Slide(JSON.stringify(slide)).then(function (result) {
-							// successfully initialized Slide Object
-							_slides_.push(result);
-							numFulfilled += 1;
-							if (numFulfilled === slides.length) {
-								// this was the last slide to fulfill its promise
-								fulfill();
-							}
-						}, function (error) {
-							// not valid Slide Object
-							reject(error);
-						});
-					}
-				}).then(function () {
-					_slides.set(_this13, _slides_);
-					fulfill();
-				}, function (error) {
-					reject(error);
-				});
-			});
+			}));
 		}
 
 		/**
@@ -662,6 +849,8 @@ var Project = function (_ParseClass$ParseClas) {
 	}, {
 		key: 'save',
 		value: function save() {
+			var _returnType23 = _flowRuntime2.default.return(_flowRuntime2.default.ref(Promise));
+
 			this.set('id', this.id);
 			this.set('parent', this.parent);
 			this.set('original_parent', this.originalParent);
@@ -676,9 +865,9 @@ var Project = function (_ParseClass$ParseClas) {
 			this.set('resolution_x', this.resolutionX);
 			this.set('resolution_y', this.resolutionY);
 			this.set('slide_ordering_sequence', this.slideOrderingSequence);
-			this.set('slides', this.slides); // TODO: test
+			this.set('slides', this.slides);
 
-			return _get(Project.prototype.__proto__ || Object.getPrototypeOf(Project.prototype), 'save', this).call(this);
+			return _returnType23.assert(_get(Project.prototype.__proto__ || Object.getPrototypeOf(Project.prototype), 'save', this).call(this));
 		}
 
 		/*
@@ -829,11 +1018,10 @@ var Project = function (_ParseClass$ParseClas) {
 	}]);
 
 	return Project;
-}(ParseClass.ParseClass);
+}(ParseClass.ParseClass)) || _class);
 
 // when using extends, the SDK is not automatically aware of the subclass
 // so have to do it manually
-
 
 Parse.Object.registerSubclass(CLASS_NAME, Project);
 

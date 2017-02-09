@@ -1,7 +1,3 @@
 {
-    "ID_FIELD": "id",
-    "AUDIO_ID_FIELD": "audio_id",
-    "URL_FIELD": "url",
-    "IS_EDITED_FIELD": "is_edited",
     "CLASS_NAME": "Video"
 }
