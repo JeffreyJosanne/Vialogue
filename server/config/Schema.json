@@ -1,0 +1,77 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+
+	"definitions": {
+
+		"slide": {
+			"type": "object",
+			"properties": {
+				"id": {"type": "string"},
+				"project_slide_id": {"type": "integer"},
+				"hyperlinks": {
+					"type": "array",
+					"items": {"type": "string"}
+				},
+				"type": {"type": "string"},
+				"resource": {
+					"$ref": "#/definitions/resource"
+				},
+				"is_edited": {"type": "boolean"}
+			}
+		},
+
+		"resource": {
+			"type": "object",
+			"properties": {
+				"id": {"type": "string"},
+				"type": {"type": "string"},
+				"url": {"type": "string"},
+				"children_resources": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/resource"
+					}
+				},
+				"is_edited": {"type": "boolean"}
+			}
+		}
+
+	},
+
+    "properties": {
+        "id": {"type": "string"},
+        "parent": {"type": "string"},
+        "original_parent": {"type": "string"},
+        "name": {"type": "string"},
+        "description": {"type": "string"},
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "is_dubbed": {"type": "boolean"},
+        "category": {"type": "string"},
+        "language": {"type": "string"},
+        "author": {"type": "string"},
+        "resolution": {
+            "type": "array",
+            "items": [
+                {"type": "integer"},
+                {"type": "integer"}
+            ],
+            "additionalItems": false
+        },
+        "slide_ordering_sequence": {
+            "type": "array",
+            "items": {"type": "integer"}
+        },
+        "slides": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/slide"
+            }
+        }
+    }
+}

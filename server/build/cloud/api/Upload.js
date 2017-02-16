@@ -9,7 +9,7 @@ Parse.Cloud.define('uploadProject', function (request, response) {
 	var p = new Project(JSON2.stringify(request.params));
 	console.log('chummamamama');
 	console.log(p);
-	p.init().then(
+	p.initialize().then(
 	// new Project().then(
 
 	function (result) {
